@@ -1,0 +1,9 @@
+1. Open the local folder in the terminal, where you want to store the project
+2. Initialize a git repository: "git init"
+
+3. Optional: Add the local folder to a safe directory: 
+"" git config --global --add safe.directory <(Path to Prect folder): (e.x. 'D:/HOMEWORK/CODEPATH/WEB102 FALL 2024/UNIT 1/APP_NAME')>  ""
+
+4. Add the project from github to a local folder: "git remote add origin https://github.com/workoholyguy/DSCI4780_SPRIN-2025_THE-TECH-TITANS.git"
+
+5. 
