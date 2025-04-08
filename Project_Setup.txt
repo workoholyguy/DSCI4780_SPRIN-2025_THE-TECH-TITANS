@@ -1,9 +1,65 @@
-1. Open the local folder in the terminal, where you want to store the project
-2. Initialize a git repository: "git init"
+Project Repository Setup Instructions for Collaborators
 
-3. Optional: Add the local folder to a safe directory: 
-"" git config --global --add safe.directory <(Path to Prect folder): (e.x. 'D:/HOMEWORK/CODEPATH/WEB102 FALL 2024/UNIT 1/APP_NAME')>  ""
+To ensure a smooth setup process for all collaborators, follow these steps to clone, configure, and sync your local repository with the remote GitHub repository.
 
-4. Add the project from github to a local folder: "git remote add origin https://github.com/workoholyguy/DSCI4780_SPRIN-2025_THE-TECH-TITANS.git"
+1. Clone the Repository
 
-5. 
+Navigate to the directory where you want to store the project, then run:
+
+cd /path/to/your/directory  # Change to your desired location
+git clone https://github.com/workoholyguy/DSCI4780_SPRIN-2025_THE-TECH-TITANS.git
+
+2. Navigate to the Project Folder
+
+cd DSCI4780_SPRIN-2025_THE-TECH-TITANS
+
+3. Configure Git (If Not Set Up)
+
+Check if your Git user information is correctly configured:
+
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+
+If necessary, update your global configuration by running:
+
+git config --global --edit
+
+4. Set the Main Branch (If Needed)
+
+Ensure your branch is set to main:
+
+git branch -M main
+
+5. Pull Latest Changes from Remote
+
+Since the remote repository may already have changes, fetch and merge them:
+
+git pull origin main --allow-unrelated-histories
+
+This prevents errors when merging different Git histories.
+
+6. Add Your Changes
+
+Once you've made modifications, stage your changes:
+
+git add .
+
+7. Commit Your Changes
+
+Commit with a meaningful message:
+
+git commit -m "Describe your changes"
+
+8. Push Changes to the Remote Repository
+
+Upload your commits to the shared GitHub repository:
+
+git push origin main
+
+9. Regularly Sync with the Remote Repository
+
+Before making any new changes, always pull the latest updates to avoid merge conflicts:
+
+git pull origin main
+
+By following these steps, all collaborators can maintain a consistent workflow while working on the project.
