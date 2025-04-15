@@ -1,0 +1,11 @@
+# ignore shapefile directories
+zipcode_map/atl_shape_files/
+zipcode_map/us_zipcode_shape_files/
+
+# ignore large file types
+*.zip
+*.shp
+*.dbf
+*.prj
+*.cpg
+*.shx
