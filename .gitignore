@@ -1,11 +1,4 @@
-# ignore shapefile directories
-zipcode_map/atl_shape_files/
-zipcode_map/us_zipcode_shape_files/
-
-# ignore large file types
+backup_files
+housing_data/tl_2022_us_county/*
+housing_data/tl_2022_us_zcta520/*
 *.zip
-*.shp
-*.dbf
-*.prj
-*.cpg
-*.shx
