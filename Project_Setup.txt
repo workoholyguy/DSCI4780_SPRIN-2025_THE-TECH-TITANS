@@ -1,65 +1,156 @@
-Project Repository Setup Instructions for Collaborators
+Project Repository Setup & Large‐File Handling Guide
+===================================================
 
-To ensure a smooth setup process for all collaborators, follow these steps to clone, configure, and sync your local repository with the remote GitHub repository.
+This document will help you get started with our GitHub repo, understand basic Git concepts, and safely work with large files using Git LFS (Large File Storage).
 
-1. Clone the Repository
+1. What Is Git & Why Use It?  
+   Git is a version‑control system that tracks changes to files over time. It lets multiple people collaborate on the same codebase, roll back mistakes, and maintain a clean history.
 
-Navigate to the directory where you want to store the project, then run:
+2. Clone the Repository  
+   **What this does:** copies the entire project, history and all, onto your machine.  
+   ```bash
+   cd /path/to/your/workspace
+   git clone https://github.com/workoholyguy/DSCI4780_SPRIN-2025_THE-TECH-TITANS.git
+   cd DSCI4780_SPRIN-2025_THE-TECH-TITANS
 
-cd /path/to/your/directory  # Change to your desired location
-git clone https://github.com/workoholyguy/DSCI4780_SPRIN-2025_THE-TECH-TITANS.git
+	3.	Configure Your Identity
+Git records who makes each change. Set your name and email once per machine:
 
-2. Navigate to the Project Folder
-
-cd DSCI4780_SPRIN-2025_THE-TECH-TITANS
-
-3. Configure Git (If Not Set Up)
-
-Check if your Git user information is correctly configured:
-
-git config --global user.name "Your Name"
+git config --global user.name  "Your Name"
 git config --global user.email "your.email@example.com"
 
-If necessary, update your global configuration by running:
+You can check with git config --list.
 
-git config --global --edit
+	4.	Ensure You’re on the main Branch
+Our main line of work lives on the main branch:
 
-4. Set the Main Branch (If Needed)
+git checkout main
+git branch -M main   # rename if needed
 
-Ensure your branch is set to main:
 
-git branch -M main
-
-5. Pull Latest Changes from Remote
-
-Since the remote repository may already have changes, fetch and merge them:
-
-git pull origin main --allow-unrelated-histories
-
-This prevents errors when merging different Git histories.
-
-6. Add Your Changes
-
-Once you've made modifications, stage your changes:
-
-git add .
-
-7. Commit Your Changes
-
-Commit with a meaningful message:
-
-git commit -m "Describe your changes"
-
-8. Push Changes to the Remote Repository
-
-Upload your commits to the shared GitHub repository:
-
-git push origin main
-
-9. Regularly Sync with the Remote Repository
-
-Before making any new changes, always pull the latest updates to avoid merge conflicts:
+	5.	Pull the Latest Changes
+Always update before you start work, to avoid conflicts:
 
 git pull origin main
 
-By following these steps, all collaborators can maintain a consistent workflow while working on the project.
+
+	6.	Make Changes, Stage & Commit
+	•	Edit files in your editor/IDE.
+	•	Stage changes (move them into Git’s “index”):
+
+git add file1.py folder/file2.csv
+# or to stage everything:
+git add .
+
+
+	•	Commit (snapshot of staged files) with a clear message:
+
+git commit -m "Add EDA notebook for ZIP‑level prices"
+
+
+	7.	Push Your Work to GitHub
+
+git push origin main
+
+
+	8.	Keeping in Sync
+Before each new feature or at least once a day, run:
+
+git pull origin main
+
+to merge others’ updates into your local copy.
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Ignoring Unnecessary Files
+
+Use a file named .gitignore to tell Git which files/folders not to track (e.g. raw data, caches):
+
+# ignore shapefile folders and downloaded zip archives
+housing_data/tl_2022_us_county/
+housing_data/tl_2022_us_zcta520/
+*.zip
+
+After editing .gitignore, remove any previously tracked items so Git stops watching them:
+
+git rm -r --cached housing_data/tl_2022_us_county
+git rm -r --cached housing_data/tl_2022_us_zcta520
+git rm --cached *.zip
+git commit -m "Untrack raw shapefiles & zip archives"
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Why Git LFS?
+	•	Problem: Git stores every version of every file. Huge binaries (e.g. shapefiles, zip archives) can bloat the repo and slow down clones.
+	•	Solution: Git LFS stores large files on a separate server, while keeping small “pointer” files in your repo.
+
+A. Install & Initialize Git LFS (one‑time)
+
+# macOS w/ Homebrew
+brew install git-lfs
+git lfs install
+
+# or Windows w/ Chocolatey
+choco install git-lfs
+git lfs install
+
+This sets up hooks so that Git will route large files through LFS.
+
+B. Configure Which Files to Track
+
+The .gitattributes file in the repo root tells Git LFS which extensions to handle:
+
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+This line means “any .zip file should use LFS.”
+
+C. Track & Commit New Large Files
+	1.	Untrack any existing .zip you mistakenly committed:
+
+git rm --cached housing_data/housing_datasets/tl_2022_us_county.zip
+git rm --cached housing_data/housing_datasets/tl_2022_us_zcta520.zip
+
+
+	2.	Re‑add the same files so Git LFS intercepts them:
+
+git add housing_data/housing_datasets/tl_2022_us_county.zip
+git add housing_data/housing_datasets/tl_2022_us_zcta520.zip
+git commit -m "Move zip archives into Git LFS"
+git push origin main
+
+
+	3.	Verify they’re in LFS:
+
+git lfs ls-files
+
+You should see your ZIPs listed with their LFS object IDs.
+
+D. Migrating Existing History (Optional)
+
+If large files still linger in old commits, rewrite the history:
+
+git lfs migrate import --include="*.zip" --include-ref=refs/heads/main
+git push --force origin main
+
+Warning: Rewriting history requires all collaborators to re‑clone or reset their forks.
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Troubleshooting
+	•	index.lock exists
+
+rm -f .git/index.lock
+
+
+	•	Merge conflicts
+	1.	git status to see conflicted files
+	2.	Edit & fix in your editor
+	3.	git add <file> then git commit
+	•	LFS upload errors
+	•	Ensure you ran git lfs install
+	•	Check git lfs env for your GitHub LFS URL
+	•	Confirm network access to github.com
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+With these instructions, even beginners can clone, commit, push, ignore, and use Git LFS effectively. If you hit any issues, ask on our Slack channel or raise an issue on GitHub!
