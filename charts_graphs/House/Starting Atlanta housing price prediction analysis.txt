@@ -1,0 +1,138 @@
+Starting Atlanta housing price prediction analysis...
+Creating synthetic data for demonstration...
+Dataset shape: (50, 14)
+
+Dataset info:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 50 entries, 0 to 49
+Data columns (total 14 columns):
+ #   Column                Non-Null Count  Dtype  
+---  ------                --------------  -----  
+ 0   zipcode               50 non-null     object 
+ 1   latitude              50 non-null     float64
+ 2   longitude             50 non-null     float64
+ 3   population            50 non-null     int32  
+ 4   crime_count           50 non-null     int32  
+ 5   school_count          50 non-null     int32  
+ 6   avg_school_rating     50 non-null     float64
+ 7   avg_housing_price     50 non-null     float64
+ 8   violent_crime_pct     50 non-null     float64
+ 9   property_crime_pct    50 non-null     float64
+ 10  median_income         50 non-null     float64
+ 11  pct_college_educated  50 non-null     float64
+ 12  region                50 non-null     object 
+ 13  crime_per_capita      50 non-null     float64
+dtypes: float64(9), int32(3), object(2)
+memory usage: 5.0+ KB
+None
+
+Summary statistics:
+        latitude  longitude    population  crime_count  school_count  \
+count  50.000000  50.000000     50.000000    50.000000     50.000000   
+mean   33.783777 -84.401669  27876.080000  1069.340000      5.080000   
+std     0.086665   0.092052  13810.233733   579.420774      2.716841   
+min    33.656175 -84.548343   5663.000000    51.000000      1.000000   
+25%    33.705130 -84.484938  14993.000000   624.250000      3.000000   
+50%    33.780815 -84.397521  28089.500000  1140.000000      4.000000   
+75%    33.844956 -84.318642  37413.500000  1583.750000      8.000000   
+max    33.940973 -84.253934  49262.000000  1980.000000      9.000000   
+
+       avg_school_rating  avg_housing_price  violent_crime_pct  \
+count          50.000000       5.000000e+01          50.000000   
+mean            5.968558       4.410631e+05           0.254043   
+std             2.069045       2.144614e+05           0.087610   
+min             2.135565       1.561586e+05           0.111756   
+25%             4.297160       2.974024e+05           0.180979   
+50%             5.724077       3.935826e+05           0.254633   
+75%             7.537722       5.674791e+05           0.316588   
+max             9.459129       1.027856e+06           0.398779   
+
+       property_crime_pct  median_income  pct_college_educated  \
+count           50.000000      50.000000             50.000000   
+mean             0.745957   83299.145694              0.464840   
+std              0.087610   21900.032401              0.175912   
+min              0.601221   38689.066580              0.219390   
+25%              0.683412   67525.555412              0.331973   
+50%              0.745367   82917.817714              0.434377   
+75%              0.819021  102437.355254              0.609962   
+max              0.888244  118121.556844              0.797499   
+
+       crime_per_capita  
+count         50.000000  
+mean           0.056016  
+std            0.049401  
+min            0.001047  
+25%            0.022827  
+50%            0.040522  
+75%            0.075221  
+max            0.213051  
+Best model: Random Forest
+R² Score: -0.155
+RMSE: $251474.76
+MAE: $214459.41
+
+Feature Importance:
+                Feature  Importance
+0           crime_count    0.264351
+2     avg_school_rating    0.176705
+4              latitude    0.140846
+7         median_income    0.120640
+5             longitude    0.076699
+8  pct_college_educated    0.063778
+3          school_count    0.059472
+6            population    0.054891
+1      crime_per_capita    0.042618
+
+Cluster Analysis:
+         avg_housing_price  crime_count  avg_school_rating  count
+cluster                                                          
+0            296111.900690  1451.052632           4.738696     19
+1            440043.140223   512.200000           5.371162     15
+2            478331.409123  1568.700000           8.637209     10
+3            840511.536103   421.166667           6.908860      6
+
+Homebuyer Recommendations:
+
+Recommendations for Family with young children:
+  1. Zip Code: 30336
+     Average Housing Price: $912,664.63
+     Crime Count: 172
+     Average School Rating: 9.5/10
+  2. Zip Code: 30339
+     Average Housing Price: $471,426.31
+     Crime Count: 343
+     Average School Rating: 8.6/10
+  3. Zip Code: 30345
+     Average Housing Price: $471,430.93
+     Crime Count: 1031
+     Average School Rating: 9.4/10
+
+Recommendations for Young professional:
+  1. Zip Code: 30321
+     Average Housing Price: $156,158.62
+     Crime Count: 434
+     Average School Rating: 3.9/10
+  2. Zip Code: 30313
+     Average Housing Price: $298,986.34
+     Crime Count: 162
+     Average School Rating: 3.3/10
+  3. Zip Code: 30338
+     Average Housing Price: $185,017.74
+     Crime Count: 816
+     Average School Rating: 4.1/10
+
+Recommendations for Retiree:
+  1. Zip Code: 30313
+     Average Housing Price: $298,986.34
+     Crime Count: 162
+     Average School Rating: 3.3/10
+  2. Zip Code: 30321
+     Average Housing Price: $156,158.62
+     Crime Count: 434
+     Average School Rating: 3.9/10
+  3. Zip Code: 30316
+     Average Housing Price: $383,560.52
+     Crime Count: 269
+     Average School Rating: 7.4/10
+
+Analysis completed successfully!
