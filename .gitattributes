@@ -6,3 +6,4 @@ housing_data/housing_datasets/*.zip filter=lfs diff=lfs merge=lfs -text
 *.prj filter=lfs diff=lfs merge=lfs -text
 *.cpg filter=lfs diff=lfs merge=lfs -text
 *.xml filter=lfs diff=lfs merge=lfs -text
+*.csv filter=lfs diff=lfs merge=lfs -text
