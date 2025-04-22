@@ -8,6 +8,5 @@ node_modules
 schools_250417
 .DS_Store
 *.DS_Store
-*.zip
 *.shp
 *.dbf
