@@ -1,0 +1,26 @@
+Crime Statistics Summary by Zip Code:
+--------------------------------------------------
+Highest crime zip code: 30318 with rate of 3250
+Lowest crime zip code: 30327 with rate of 650
+Average crime rate across all zip codes: 1574.00
+
+Zip codes with crime above average:
+- 30318: 3250 (Highest crime concentration)
+- 30308: 2800 (High crime relative to population)
+- 30303: 2700 (High crime relative to population)
+- 30326: 2500 (High crime relative to population)
+- 30324: 2400 (High crime relative to population)
+- 30313: 2200 (Downtown/Midtown high crime area)
+- 30309: 2100 (Downtown/Midtown high crime area)
+- 30310: 1950 (West Atlanta high crime area)
+- 30314: 1850 (West Atlanta high crime area)
+- 30311: 1650 (West Atlanta crime area)
+
+Zip codes in high crime category (>2000):
+- 30318: 3250 (Highest crime concentration)
+- 30308: 2800 (High crime relative to population)
+- 30303: 2700 (High crime relative to population)
+- 30326: 2500 (High crime relative to population)
+- 30324: 2400 (High crime relative to population)
+- 30313: 2200 (Downtown/Midtown high crime area)
+- 30309: 2100 (Downtown/Midtown high crime area)

@@ -1,0 +1,10 @@
+Crime and Housing Price Summary Statistics:
+--------------------------------------------------
+Correlation between crime and housing prices: -0.45
+Highest crime zip code: 30318 with rate of 3250
+Lowest crime zip code: 30327 with rate of 650
+Highest housing price: $850,000 in zip code 30327
+Lowest housing price: $255,000 in zip code 30344
+
+Average housing price in high crime areas (>1000): $356,052.63
+Price difference between highest crime and lowest crime areas: $500,000.00
