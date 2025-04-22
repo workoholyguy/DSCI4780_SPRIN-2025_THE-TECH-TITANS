@@ -6,7 +6,6 @@ crime_stats
 housing_data
 node_modules
 schools_250417
-zipcode_map
 housing_data/housing_datasets/tl_2022_us_county.zip
 .DS_Store
 *.DS_Store
