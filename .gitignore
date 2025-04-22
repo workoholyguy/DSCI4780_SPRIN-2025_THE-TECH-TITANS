@@ -12,10 +12,9 @@ Project_Setup.txt
 schools_250417
 Word
 zipcode_map
-housing_data/housing_exploration.ipynb
 housing_data/housing_datasets/tl_2022_us_county.zip
 .DS_Store
-.DS_Store
+*.DS_Store
 *.zip
 *.shp
 *.dbf
