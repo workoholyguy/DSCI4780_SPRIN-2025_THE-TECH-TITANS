@@ -2,7 +2,6 @@ backup_files
 # housing_data/housing_datasets/tl_2022_us_county/*
 # housing_data/housing_datasets/tl_2022_us_zcta520/*
 housing_data/housing_datasets
-housing_data/housing_exploration.ipynb
 charts_graphs
 crime_stats
 housing_data
