@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<!-- saved from url=(0012)about:srcdoc -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script>
+      (function() {
+        const originalConsole = window.console;
+        window.console = {
+          log: (...args) => {
+            originalConsole.log(...args);
+            window.parent.postMessage({ type: 'console', message: args.join(' ') }, '*');
+          },
+          error: (...args) => {
+            originalConsole.error(...args);
+            window.parent.postMessage({ type: 'console', message: 'Error: ' + args.join(' ') }, '*');
+          },
+          warn: (...args) => {
+            originalConsole.warn(...args);
+            window.parent.postMessage({ type: 'console', message: 'Warning: ' + args.join(' ') }, '*');
+          }
+        };
+
+        window.addEventListener('error', (event) => {
+          window.parent.postMessage({ type: 'console', message: 'Uncaught Error: ' + event.message }, '*');
+        });
+      })();
+    </script>
+  
+  <title>Atlanta Housing Market Analysis</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    h2 {
+      color: #555;
+      margin-top: 30px;
+    }
+    .chart-container {
+      position: relative;
+      height: 400px;
+      margin-bottom: 50px;
+    }
+    .conclusion {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-left: 5px solid #4285f4;
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+<style type="text/css">/* Chart.js */
+@keyframes chartjs-render-animation{from{opacity:.99}to{opacity:1}}.chartjs-render-monitor{animation:chartjs-render-animation 1ms}.chartjs-size-monitor,.chartjs-size-monitor-expand,.chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}.chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}.chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}</style></head>
+<body>
+  <div class="container">
+    <h1>Atlanta Housing Market Analysis</h1>
+    <p>Analysis of how crime rates and school quality affect housing prices across Atlanta neighborhoods</p>
+    
+    <div class="chart-container"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+      <h2>Housing Prices by Zipcode (Top 10)</h2>
+      <canvas id="housingPriceChart" width="1250" height="500" style="display: block; height: 400px; width: 1000px;" class="chartjs-render-monitor"></canvas>
+    </div>
+    
+    <div class="chart-container"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+      <h2>Crime Rates by Zipcode (Top 10)</h2>
+      <canvas id="crimeRateChart" width="1250" height="500" style="display: block; height: 400px; width: 1000px;" class="chartjs-render-monitor"></canvas>
+    </div>
+    
+    <div class="chart-container"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+      <h2>School Quality vs Housing Price</h2>
+      <canvas id="schoolHousingChart" width="1250" height="500" style="display: block; height: 400px; width: 1000px;" class="chartjs-render-monitor"></canvas>
+    </div>
+    
+    <div class="chart-container"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+      <h2>Crime Rate vs Housing Price</h2>
+      <canvas id="crimeHousingChart" width="1250" height="500" style="display: block; height: 400px; width: 1000px;" class="chartjs-render-monitor"></canvas>
+    </div>
+    
+    <h2>Regional Comparison</h2>
+    <table>
+      <tbody><tr>
+        <th>Region</th>
+        <th>Avg Housing Price</th>
+        <th>Avg School Grade</th>
+        <th>Avg Crime Rate</th>
+      </tr>
+      <tr>
+        <td>North Atlanta</td>
+        <td>$757,000</td>
+        <td>3.5 (B+)</td>
+        <td>833</td>
+      </tr>
+      <tr>
+        <td>Midtown</td>
+        <td>$423,167</td>
+        <td>1.2 (D+)</td>
+        <td>623</td>
+      </tr>
+      <tr>
+        <td>South Atlanta</td>
+        <td>$300,000</td>
+        <td>2.3 (C+)</td>
+        <td>1148</td>
+      </tr>
+    </tbody></table>
+    
+    <h2>Top 5 Areas for Best Value (Good Schools, Low Crime)</h2>
+    <table>
+      <tbody><tr>
+        <th>Zipcode</th>
+        <th>School Grade</th>
+        <th>Crime Rate</th>
+        <th>Housing Price</th>
+      </tr>
+      <tr>
+        <td>30313</td>
+        <td>A</td>
+        <td>351</td>
+        <td>$719,000</td>
+      </tr>
+      <tr>
+        <td>30326</td>
+        <td>A</td>
+        <td>603</td>
+        <td>$900,000</td>
+      </tr>
+      <tr>
+        <td>30311</td>
+        <td>A</td>
+        <td>694</td>
+        <td>$562,000</td>
+      </tr>
+      <tr>
+        <td>30317</td>
+        <td>A</td>
+        <td>750</td>
+        <td>$584,000</td>
+      </tr>
+      <tr>
+        <td>30319</td>
+        <td>A</td>
+        <td>785</td>
+        <td>$672,000</td>
+      </tr>
+    </tbody></table>
+    
+    <div class="conclusion">
+      <h2>Key Findings</h2>
+      <p>Based on our analysis of Atlanta housing data:</p>
+      <ul>
+        <li>Housing prices correlate positively with school quality (correlation: 0.394)</li>
+        <li>Housing prices correlate negatively with crime rates (correlation: -0.194)</li>
+        <li>North Atlanta has the highest housing prices, best schools, and relatively low crime</li>
+        <li>South Atlanta has lower housing prices, average schools, and higher crime rates</li>
+        <li>Certain areas (like zipcode 30313) offer an optimal balance of good schools and lower crime</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Sample data
+    const data = [
+      {zipcode: "30303", lat: 33.77, lng: -84.33, schoolGrade: 0, numSchools: 4, crimeRate: 1175, housingPrice: 455000},
+      {zipcode: "30305", lat: 33.82, lng: -84.26, schoolGrade: 2, numSchools: 3, crimeRate: 98, housingPrice: 405000},
+      {zipcode: "30306", lat: 33.72, lng: -84.42, schoolGrade: 2, numSchools: 1, crimeRate: 490, housingPrice: 311000},
+      {zipcode: "30307", lat: 33.90, lng: -84.44, schoolGrade: 3, numSchools: 2, crimeRate: 990, housingPrice: 765000},
+      {zipcode: "30308", lat: 33.74, lng: -84.36, schoolGrade: 3, numSchools: 4, crimeRate: 1973, housingPrice: 216000},
+      {zipcode: "30309", lat: 33.96, lng: -84.48, schoolGrade: 3, numSchools: 4, crimeRate: 881, housingPrice: 1128000},
+      {zipcode: "30310", lat: 33.95, lng: -84.17, schoolGrade: 3, numSchools: 5, crimeRate: 329, housingPrice: 775000},
+      {zipcode: "30311", lat: 33.93, lng: -84.44, schoolGrade: 4, numSchools: 5, crimeRate: 694, housingPrice: 562000},
+      {zipcode: "30312", lat: 33.76, lng: -84.28, schoolGrade: 1, numSchools: 2, crimeRate: 644, housingPrice: 306000},
+      {zipcode: "30313", lat: 33.95, lng: -84.11, schoolGrade: 4, numSchools: 4, crimeRate: 351, housingPrice: 719000},
+      {zipcode: "30314", lat: 33.96, lng: -84.12, schoolGrade: 4, numSchools: 4, crimeRate: 1939, housingPrice: 642000},
+      {zipcode: "30315", lat: 33.84, lng: -84.48, schoolGrade: 3, numSchools: 2, crimeRate: 914, housingPrice: 532000},
+      {zipcode: "30316", lat: 34.09, lng: -84.23, schoolGrade: 2, numSchools: 2, crimeRate: 470, housingPrice: 725000},
+      {zipcode: "30317", lat: 33.94, lng: -84.11, schoolGrade: 4, numSchools: 5, crimeRate: 750, housingPrice: 584000},
+      {zipcode: "30318", lat: 33.85, lng: -84.15, schoolGrade: 4, numSchools: 3, crimeRate: 1928, housingPrice: 577000},
+      {zipcode: "30319", lat: 34.01, lng: -84.23, schoolGrade: 4, numSchools: 4, crimeRate: 785, housingPrice: 672000},
+      {zipcode: "30324", lat: 33.85, lng: -84.15, schoolGrade: 4, numSchools: 1, crimeRate: 998, housingPrice: 733000},
+      {zipcode: "30326", lat: 34.07, lng: -84.13, schoolGrade: 4, numSchools: 5, crimeRate: 603, housingPrice: 900000},
+      {zipcode: "30327", lat: 33.77, lng: -84.41, schoolGrade: 1, numSchools: 1, crimeRate: 9, housingPrice: 370000},
+      {zipcode: "30331", lat: 33.80, lng: -84.45, schoolGrade: 0, numSchools: 2, crimeRate: 898, housingPrice: 471000},
+      {zipcode: "30342", lat: 33.94, lng: -84.24, schoolGrade: 2, numSchools: 3, crimeRate: 107, housingPrice: 1059000},
+      {zipcode: "30344", lat: 33.72, lng: -84.36, schoolGrade: 2, numSchools: 4, crimeRate: 981, housingPrice: 373000}
+    ];
+    
+    // Sort data by housing price
+    const sortedByPrice = [...data].sort((a, b) => b.housingPrice - a.housingPrice).slice(0, 10);
+    
+    // Sort data by crime rate
+    const sortedByCrime = [...data].sort((a, b) => b.crimeRate - a.crimeRate).slice(0, 10);
+    
+    // Format price for display
+    const formatPrice = (price) => {
+      return `$${(price/1000).toFixed(0)}k`;
+    };
+    
+    // School grade labels
+    const schoolGradeLabels = {
+      0: 'F',
+      1: 'D',
+      2: 'C',
+      3: 'B',
+      4: 'A'
+    };
+    
+    // Housing Price Chart
+    const housingPriceCtx = document.getElementById('housingPriceChart').getContext('2d');
+    new Chart(housingPriceCtx, {
+      type: 'bar',
+      data: {
+        labels: sortedByPrice.map(item => item.zipcode),
+        datasets: [{
+          label: 'Housing Price',
+          data: sortedByPrice.map(item => item.housingPrice / 1000), // Display in thousands
+          backgroundColor: 'rgba(75, 192, 192, 0.7)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              callback: function(value) {
+                return '$' + value + 'k';
+              }
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Housing Price (Thousands $)'
+            }
+          }],
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Zipcode'
+            }
+          }]
+        }
+      }
+    });
+    
+    // Crime Rate Chart
+    const crimeRateCtx = document.getElementById('crimeRateChart').getContext('2d');
+    new Chart(crimeRateCtx, {
+      type: 'bar',
+      data: {
+        labels: sortedByCrime.map(item => item.zipcode),
+        datasets: [{
+          label: 'Crime Rate',
+          data: sortedByCrime.map(item => item.crimeRate),
+          backgroundColor: 'rgba(255, 99, 132, 0.7)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Crime Rate'
+            }
+          }],
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Zipcode'
+            }
+          }]
+        }
+      }
+    });
+    
+    // School vs Housing Price Chart
+    const schoolHousingCtx = document.getElementById('schoolHousingChart').getContext('2d');
+    new Chart(schoolHousingCtx, {
+      type: 'scatter',
+      data: {
+        datasets: [{
+          label: 'Zipcodes',
+          data: data.map(item => ({
+            x: item.schoolGrade,
+            y: item.housingPrice / 1000,
+            zipcode: item.zipcode
+          })),
+          backgroundColor: data.map(item => {
+            // Color based on housing price
+            if (item.housingPrice > 700000) return 'rgba(0, 200, 83, 0.7)';
+            if (item.housingPrice > 500000) return 'rgba(54, 162, 235, 0.7)';
+            return 'rgba(255, 159, 64, 0.7)';
+          }),
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+          pointRadius: 8,
+          pointHoverRadius: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          yAxes: [{
+            ticks: {
+              callback: function(value) {
+                return '$' + value + 'k';
+              }
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Housing Price (Thousands $)'
+            }
+          }],
+          xAxes: [{
+            ticks: {
+              min: -0.5,
+              max: 4.5,
+              stepSize: 1,
+              callback: function(value) {
+                return schoolGradeLabels[value] || '';
+              }
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'School Grade'
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              const dataPoint = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+              return `Zipcode: ${dataPoint.zipcode}, School Grade: ${schoolGradeLabels[dataPoint.x]}, Price: $${dataPoint.y}k`;
+            }
+          }
+        }
+      }
+    });
+    
+    // Crime vs Housing Price Chart
+    const crimeHousingCtx = document.getElementById('crimeHousingChart').getContext('2d');
+    new Chart(crimeHousingCtx, {
+      type: 'scatter',
+      data: {
+        datasets: [{
+          label: 'Zipcodes',
+          data: data.map(item => ({
+            x: item.crimeRate,
+            y: item.housingPrice / 1000,
+            zipcode: item.zipcode,
+            schoolGrade: item.schoolGrade
+          })),
+          backgroundColor: data.map(item => {
+            // Color based on school grade
+            if (item.schoolGrade >= 3) return 'rgba(0, 200, 83, 0.7)'; // A/B
+            if (item.schoolGrade >= 2) return 'rgba(54, 162, 235, 0.7)'; // C
+            return 'rgba(255, 99, 132, 0.7)'; // D/F
+          }),
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+          pointRadius: 8,
+          pointHoverRadius: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          yAxes: [{
+            ticks: {
+              callback: function(value) {
+                return '$' + value + 'k';
+              }
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Housing Price (Thousands $)'
+            }
+          }],
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Crime Rate'
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              const dataPoint = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+              return `Zipcode: ${dataPoint.zipcode}, Crime Rate: ${dataPoint.x}, Price: $${dataPoint.y}k, School: ${schoolGradeLabels[dataPoint.schoolGrade]}`;
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</body></html>
