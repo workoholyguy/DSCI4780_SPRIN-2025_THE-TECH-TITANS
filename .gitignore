@@ -4,7 +4,7 @@ backup_files
 housing_data/housing_datasets
 crime_stats
 housing_data
-node_modules
+node_modules/
 .DS_Store
 *.DS_Store
 *.shp
